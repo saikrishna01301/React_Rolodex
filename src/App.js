@@ -1,5 +1,4 @@
 import { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 class App extends Component {
@@ -9,6 +8,7 @@ class App extends Component {
     // local storage(state)
     this.state = {
       monsters: [],
+      searchFeild: "",
     };
   }
 
@@ -17,36 +17,35 @@ class App extends Component {
     fetch("https://jsonplaceholder.typicode.com/users") // fetching the data
       .then((res) => res.json()) // converting promise to json file and it returns promise
       .then((users) =>
-        this.setState(
-          () => {
-            return { monsters: users }; // users = [{}*10] updating state
-          },
-          () => {
-            console.log(this.state.monsters);
-          }
-        )
+        this.setState(() => {
+          return { monsters: users }; // users = [{}*10] updating state
+        })
       );
   }
 
-  onChangeHandler = (e) => {
+  onSearchHandler = (e) => {
     e.preventDefault();
-    const filteredArray = this.state.monsters.filter((monster) => {
-      return monster.name.toLowerCase().includes(e.target.value.toLowerCase());
-    });
+    const searchFeild = e.target.value.toLowerCase();
     this.setState(() => {
-      return { monsters: filteredArray };
+      return { searchFeild };
     });
   };
   render() {
+    const { monsters, searchFeild } = this.state;
+    const { onSearchHandler } = this; // destructuring 
+    const filteredArray = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchFeild);
+    });
+
     return (
       <div className="App">
         <input
           type="search"
           className="search__box"
           placeholder="search monster"
-          onChange={this.onChangeHandler}
+          onChange={onSearchHandler}
         />
-        {this.state.monsters.map((monster) => {
+        {filteredArray.map((monster) => {
           return (
             <div key={monster.id}>
               <h3>{monster.name}</h3>
