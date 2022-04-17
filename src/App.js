@@ -17,15 +17,35 @@ class App extends Component {
     fetch("https://jsonplaceholder.typicode.com/users") // fetching the data
       .then((res) => res.json()) // converting promise to json file and it returns promise
       .then((users) =>
-        this.setState(() => {
-          return { monsters: users }; // users = [{}*10] updating state
-        })
+        this.setState(
+          () => {
+            return { monsters: users }; // users = [{}*10] updating state
+          },
+          () => {
+            console.log(this.state.monsters);
+          }
+        )
       );
   }
 
+  onChangeHandler = (e) => {
+    e.preventDefault();
+    const filteredArray = this.state.monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(e.target.value.toLowerCase());
+    });
+    this.setState(() => {
+      return { monsters: filteredArray };
+    });
+  };
   render() {
     return (
       <div className="App">
+        <input
+          type="search"
+          className="search__box"
+          placeholder="search monster"
+          onChange={this.onChangeHandler}
+        />
         {this.state.monsters.map((monster) => {
           return (
             <div key={monster.id}>
