@@ -2,7 +2,7 @@ import { Component } from "react";
 
 class CardContainer extends Component {
   render() {
-    const { name, id, email } = this.props;
+    const { name, id, email } = this.props.monster;
     return (
       <div key={id} className="card-container">
         <img
