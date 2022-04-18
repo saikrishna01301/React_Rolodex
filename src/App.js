@@ -1,4 +1,5 @@
 import { Component } from "react";
+import CardList from "./components/card-List/CardList";
 import "./App.css";
 
 class App extends Component {
@@ -32,7 +33,7 @@ class App extends Component {
   };
   render() {
     const { monsters, searchFeild } = this.state;
-    const { onSearchHandler } = this; // destructuring 
+    const { onSearchHandler } = this; // destructuring
     const filteredArray = monsters.filter((monster) => {
       return monster.name.toLowerCase().includes(searchFeild);
     });
@@ -45,13 +46,8 @@ class App extends Component {
           placeholder="search monster"
           onChange={onSearchHandler}
         />
-        {filteredArray.map((monster) => {
-          return (
-            <div key={monster.id}>
-              <h3>{monster.name}</h3>
-            </div>
-          );
-        })}
+        
+        <CardList monsters={filteredArray}/>
       </div>
     );
   }
